@@ -12,7 +12,6 @@ import Link from '@editorjs/link';
 import FontSizeTool from '../tools/font-size-tool/font-size-tool';
 
 import SimpleImage from './simple-image-tool/image-tool';
-import AITool from './ai-tool/ai-tool';
 import LinkTool from './link-text-tool/link-tool';
 import MarkDownTool from './markdown-tool/markdown-tool.js';
 import CodeTool from './code-tool/code-tool.js';
@@ -104,7 +103,6 @@ export const EDITOR_JS_TOOLS = {
 		'class': LinkTool,
 		shortcut: 'CMD+SHIFT+M'
 	},
-	aiTool: AITool,
 	markdown: MarkDownTool
 };
 
