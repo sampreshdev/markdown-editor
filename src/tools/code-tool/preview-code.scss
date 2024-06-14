@@ -1,0 +1,9 @@
+.language-select {
+    :global {
+        .ant-select {
+            background: transparent;
+            border: transparent;
+            min-width: 100px;
+        }
+    }
+}

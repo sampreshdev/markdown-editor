@@ -1,0 +1,11 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+.idea
+.vscode
+.DS_Store
+node_modules
+dist
+build
+dist.zip
+build.zip
+package-lock.json
+antrika-portal-build.zip
