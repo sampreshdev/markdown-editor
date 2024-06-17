@@ -1,11 +1,8 @@
-
-import 'promise-polyfill/src/polyfill';
-
 // import 'antd/dist/antd.less';
 
 import React from 'react';
 import * as Sentry from '@sentry/react';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 import { render } from 'react-dom';
 
 import App from './app';
@@ -20,9 +17,6 @@ if (!dev) {
 		]
 	});
 }
-
-// configureToast();
-Modal.setAppElement('#root');
 render(<App />, document.getElementById('root'));
 
 // window.React1 = require('react');

@@ -4,6 +4,37 @@
   --border-color: #e8e8eb;
 
 }
+
+.image-tool__image {
+  width: fit-content;
+  margin-bottom: 0px;
+}
+
+.image-tool__image{
+  position: relative;
+ }
+ .image-tool__image:has(.resizers) {
+   border: 3px solid #4286f4;
+   margin: 2px;
+ }
+  .image-tool__image .resizers .resizer{
+   width: 10px;
+   height: 10px;
+   border-radius: 50%; /*magic to turn square into circle*/
+   background: white;
+   border: 3px solid #4286f4;
+   position: absolute;
+ }
+  .image-tool__image .resizers .resizer.bottom-right {
+   right: -5px;
+   bottom: -5px;
+   cursor: nwse-resize;
+ }
+ .image-tool__image-picture {
+  width: inherit;
+  height: inherit;
+ }
+
 .image-tool--empty {
   display: flex;
   flex-direction: column-reverse;
@@ -15,6 +46,13 @@
 
 .image-tool--empty .image-tool__image {
   display: none;
+}
+.image-markdown {
+  display: block;
+  overflow: auto;
+  height: 100%;
+  word-break: break-word;
+  padding: 5px 10px;
 }
 .image-tool__caption .image-tool[contentEditable="true"][data-placeholder]::before {
   position: absolute !important;

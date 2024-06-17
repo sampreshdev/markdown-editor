@@ -40,7 +40,7 @@
  * @property {string} file.url — image URL
  */
 
-import './image-resize-tool.scss?global';
+import './image-resize-tool.css';
 
 import { IconAddBorder, IconStretch, IconAddBackground, IconPicture } from '@codexteam/icons';
 
@@ -82,13 +82,6 @@ export default class ImageTool {
 		return true;
 	}
 
-	/**
-   * Get Tool toolbox settings
-   * icon - Tool icon's SVG
-   * title - title to show in toolbox
-   *
-   * @returns {{icon: string, title: string}}
-   */
 	static get toolbox() {
 		return {
 			icon: IconPicture,
@@ -140,6 +133,7 @@ export default class ImageTool {
      * Tool's initial config
      */
 		this.config = {
+			...config,
 			endpoints: config.endpoints || '',
 			additionalRequestData: config.additionalRequestData || {},
 			additionalRequestHeaders: config.additionalRequestHeaders || {},
@@ -201,7 +195,7 @@ export default class ImageTool {
    * @public
    */
 	validate(savedData) {
-		return savedData.file && savedData.file.url;
+		return savedData.text;
 	}
 
 	/**
@@ -211,10 +205,38 @@ export default class ImageTool {
    *
    * @returns {ImageToolData}
    */
+
+	converImageTomarkDown(data, width, height) {
+		let markdown = '';
+
+		if (data.file && data.file.url) {
+			markdown += `![Image](${ data.file.url })\t`;
+		}
+		if (height) {
+			markdown += `height: ${ height }\t`;
+		}
+		if (width) {
+			markdown += `width: ${ width }\t`;
+		}
+		if (data.withBorder !== undefined) {
+			markdown += `withBorder: ${ data.withBorder }\t`;
+		}
+		if (data.stretched !== undefined) {
+			markdown += `stretched: ${ data.stretched }\t`;
+		}
+		if (data.withBackground !== undefined) {
+			markdown += `withBackground: ${ data.withBackground }\n`;
+		}
+
+		return markdown;
+	}
 	save() {
 		this._data.width = this.ui.nodes?.imageEl?.clientWidth || this.data.width;
 		this._data.height = this.ui.nodes?.imageEl?.clientHeight || this.data.height;
-		return this.data;
+		let returnData = this.converImageTomarkDown(this.data, this._data.width, this._data.height);
+		return {
+			text: returnData
+		};
 	}
 
 	/**
@@ -343,9 +365,33 @@ export default class ImageTool {
    * @param {ImageToolData} data - data in Image Tool format
    */
 	set data(data) {
-		this.image = data.file;
-		this._data.height = data.height || null;
-		this._data.width = data.width || null;
+		const jsonData = {};
+		const lines = this.data?.text?.split('\t');
+		if (lines?.length > 0) {
+			lines.forEach(line => {
+				if (line.startsWith('![Image]')) {
+					const urlMatch = line.match(/\((.*?)\)/);
+					if (urlMatch) {
+						jsonData.file = { url: urlMatch[1] };
+					}
+				} else {
+					const parts = line.split(':');
+					if (parts.length === 2) {
+						const key = parts[0].trim();
+						let value = parts[1].trim();
+						if (key === 'height' || key === 'width') {
+							value = parseInt(value, 10);
+						} else if (value === 'true' || value === 'false') {
+							value = value === 'true';
+						}
+						jsonData[key] = value;
+					}
+				}
+			});
+		}
+		this.image = jsonData.file;
+		this._data.height = jsonData.height || null;
+		this._data.width = jsonData.width || null;
 		ImageTool.tunes.forEach(({ name: tune }) => {
 			const value = typeof data[tune] === 'undefined' ? false : data[tune] === true || data[tune] === 'true';
 
@@ -375,7 +421,7 @@ export default class ImageTool {
 		this._data.file = file || {};
 
 		if (file && file.url) {
-			this.ui.fillImage(file.url, this._data.width, this._data.height);
+			this.ui.fillImage(file.url, this._data.width, this._data.height, this.config.rawMode, this._data);
 		}
 	}
 

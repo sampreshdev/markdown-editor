@@ -2,7 +2,7 @@ import { IconPicture } from '@codexteam/icons';
 
 import { make } from './utils/dom';
 
-import './image-resize-tool.scss?global';
+import './image-resize-tool.css?inline';
 /**
  * Class for working with UI:
  *  - rendering base structure
@@ -27,7 +27,8 @@ export default class Ui {
 			imageContainer: make('div', [ this.CSS.imageContainer ]),
 			fileButton: this.createFileButton(),
 			imageEl: undefined,
-			imagePreloader: make('div', this.CSS.imagePreloader)
+			imagePreloader: make('div', this.CSS.imagePreloader),
+			imageMarkdown: make('div', this.CSS.markdownText)
 		};
 
 		/**
@@ -40,9 +41,11 @@ export default class Ui {
      *    <select-file-button />
      *  </wrapper>
      */
-		this.nodes.imageContainer.appendChild(this.nodes.imagePreloader);
-		this.nodes.wrapper.appendChild(this.nodes.imageContainer);
-		this.nodes.wrapper.appendChild(this.nodes.fileButton);
+		if (!this.config.rawMode) {
+			this.nodes.imageContainer.appendChild(this.nodes.imagePreloader);
+			this.nodes.wrapper.appendChild(this.nodes.imageContainer);
+			this.nodes.wrapper.appendChild(this.nodes.fileButton);
+		}
 	}
 
 	/**
@@ -63,7 +66,8 @@ export default class Ui {
 			wrapper: 'image-tool',
 			imageContainer: 'image-tool__image',
 			imagePreloader: 'image-tool__image-preloader',
-			imageEl: 'image-tool__image-picture'
+			imageEl: 'image-tool__image-picture',
+			markdownText: 'image-markdown'
 		};
 	}
 
@@ -146,7 +150,31 @@ export default class Ui {
    * @param {number} height - image height
    * @returns {void}
    */
-	fillImage(url, width, height) {
+	converImageTomarkDown(data, width, height) {
+		let markdown = '';
+
+		if (data.file && data.file.url) {
+			markdown += `![Image](${ data.file.url })\t`;
+		}
+		if (height) {
+			markdown += `height: ${ height }\t`;
+		}
+		if (width) {
+			markdown += `width: ${ width }\t`;
+		}
+		if (data.withBorder !== undefined) {
+			markdown += `withBorder: ${ data.withBorder }\t`;
+		}
+		if (data.stretched !== undefined) {
+			markdown += `stretched: ${ data.stretched }\t`;
+		}
+		if (data.withBackground !== undefined) {
+			markdown += `withBackground: ${ data.withBackground }\n`;
+		}
+
+		return markdown;
+	}
+	fillImage(url, width, height, rawMode, data) {
 		/**
      * Check for a source extension to compose element correctly: video tag for mp4, img — for others
      */
@@ -191,13 +219,19 @@ export default class Ui {
      *
      * @type {Element}
      */
-		this.nodes.imageEl = make(tag, this.CSS.imageEl, attributes);
-		this.nodes.imageContainer.style.width = width + 'px';
-		this.nodes.imageContainer.style.height = height + 'px';
+		if (rawMode) {
+			let returnData = this.converImageTomarkDown(data, data.width, data.height);
+			this.nodes.imageMarkdown.innerHTML = returnData;
+			this.nodes.wrapper.appendChild(this.nodes.imageMarkdown);
+		} else {
+			this.nodes.imageEl = make(tag, this.CSS.imageEl, attributes);
+			this.nodes.imageContainer.style.width = width + 'px';
+			this.nodes.imageContainer.style.height = height + 'px';
 
 		/**
      * Add load event listener
      */
+	console.log(this.nodes.imageEl);
 		this.nodes.imageEl.addEventListener(eventName, () => {
 			this.toggleStatus(Ui.status.FILLED);
 
@@ -212,7 +246,7 @@ export default class Ui {
 
 		document.addEventListener('click', e => {
 			let elementResize = document.getElementsByClassName('image-tool__image');
-
+			console.log('asdfg');
 			if (elementResize && !(e?.target?.className === 'image-tool__image-picture' || e?.target?.className === 'image-tool__image')) {
 				let array = [...elementResize];
 				array.map(el => {
@@ -274,6 +308,7 @@ export default class Ui {
 			}
 			makeResizableDiv('.image-tool--resize .image-tool__image');
 		});
+		}
 	}
 
 	handleResizers() {
