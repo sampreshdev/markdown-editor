@@ -7,9 +7,9 @@ import {
 	TableRowNode
 } from '@lexical/table';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import invariant from 'shared/invariant';
 
-import Button from '../ui/Button';
+import invariant from '../shared/invariant';
+import Button from '../ui/button';
 import { DialogActions } from '../ui/Dialog';
 import TextInput from '../ui/text-input';
 

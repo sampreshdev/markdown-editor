@@ -15,12 +15,12 @@ import {
 } from 'lexical';
 import { useCallback, useEffect } from 'react';
 
-import { useToolbarState } from '../../context/ToolbarContext';
+import { useToolbarState } from '../context/toolbar-context';
 import {
 	$createAutocompleteNode,
 	AutocompleteNode
-} from '../../nodes/AutocompleteNode';
-import { addSwipeRightListener } from '../../utils/swipe';
+} from '../nodes/autocomplete-node';
+import { addSwipeRightListener } from '../utils/swipe';
 
 const HISTORY_MERGE = { tag: 'history-merge' };
 

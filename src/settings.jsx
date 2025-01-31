@@ -3,8 +3,8 @@ import { CAN_USE_BEFORE_INPUT } from '@lexical/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import { INITIAL_SETTINGS, isDevPlayground } from './app-settings';
-import { useSettings } from './context/SettingsContext';
-import Switch from './ui/Switch';
+import { useSettings } from './context/settings-context';
+import Switch from './ui/switch';
 
 export default function Settings() {
 	const windowLocation = window.location;

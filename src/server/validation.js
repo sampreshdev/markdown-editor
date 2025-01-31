@@ -5,7 +5,7 @@ import { createHeadlessEditor } from '@lexical/headless';
 import { $isMarkNode, $unwrapMarkNode } from '@lexical/mark';
 import { $getRoot, $isElementNode } from 'lexical';
 
-import PlaygroundNodes from '../nodes/PlaygroundNodes';
+import PlaygroundNodes from '../nodes/playground-nodes';
 
 const hostname = 'localhost';
 const port = 1235;

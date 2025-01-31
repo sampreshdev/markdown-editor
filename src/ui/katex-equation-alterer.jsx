@@ -3,7 +3,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { useCallback, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import Button from './Button';
+import Button from './button';
 import KatexRenderer from './katex-renderer';
 
 import './katex-equation-alterer.css';

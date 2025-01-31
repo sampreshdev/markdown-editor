@@ -24,16 +24,17 @@ import {
 } from 'lexical';
 import { useCallback, useEffect, useState } from 'react';
 
-import { INITIAL_SETTINGS } from '../../app-settings';
-import useFlashMessage from '../../hooks/useFlashMessage';
-import useModal from '../../hooks/useModal';
-import Button from '../../ui/Button';
-import { docFromHash, docToHash } from '../../utils/doc-serialization';
-import { PLAYGROUND_TRANSFORMERS } from '../MarkdownTransformers';
+import { INITIAL_SETTINGS } from '../app-settings';
+import useFlashMessage from '../hooks/use-flash-message';
+import useModal from '../hooks/use-modal';
+import Button from '../ui/button';
+import { docFromHash, docToHash } from '../utils/doc-serialization';
+
 import {
 	SPEECH_TO_TEXT_COMMAND,
 	SUPPORT_SPEECH_RECOGNITION
-} from '../SpeechToTextPlugin';
+} from './SpecialTextPlugin/special-text-plugin';
+import { PLAYGROUND_TRANSFORMERS } from './MarkdownTransformers/markdown-transformers';
 
 async function sendEditorState(editor) {
 	const stringifiedEditorState = JSON.stringify(editor.getEditorState());

@@ -11,19 +11,19 @@ import {
 	TextNode
 } from 'lexical';
 
-import { FlashMessageContext } from './context/FlashMessageContext';
-import { SettingsContext, useSettings } from './context/SettingsContext';
-import { SharedHistoryContext } from './context/SharedHistoryContext';
-import { ToolbarContext } from './context/ToolbarContext';
+import { FlashMessageContext } from './context/flash-message-context';
+import { SettingsContext, useSettings } from './context/settings-context';
+import { SharedHistoryContext } from './context/shared-history-context';
+import { ToolbarContext } from './context/toolbar-context';
 import Editor from './editor';
 import logo from './images/logo.svg';
-import PlaygroundNodes from './nodes/PlaygroundNodes';
-import DocsPlugin from './plugins/DocsPlugin';
-import PasteLogPlugin from './plugins/PasteLogPlugin';
+import PlaygroundNodes from './nodes/playground-nodes';
+import DocsPlugin from './plugins/DocsPlugin/docs-plugin';
+import PasteLogPlugin from './plugins/PasteLogPlugin/paste-log-plugin';
 import { TableContext } from './plugins/table-plugin';
-import TestRecorderPlugin from './plugins/TestRecorderPlugin';
-import { parseAllowedFontSize } from './plugins/ToolbarPlugin/fontSize';
-import TypingPerfPlugin from './plugins/TypingPerfPlugin';
+import TestRecorderPlugin from './plugins/TestRecorderPlugin/test-recorder-plugin';
+import { parseAllowedFontSize } from './plugins/ToolbarPlugin/font-size';
+import TypingPerfPlugin from './plugins/TypingPerfPlugin/typing-perf-plugin';
 import Settings from './settings';
 import PlaygroundEditorTheme from './themes/playground-editor-theme';
 import { parseAllowedColor } from './ui/color-picker';

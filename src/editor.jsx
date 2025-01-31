@@ -18,52 +18,52 @@ import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useEffect, useState } from 'react';
-import { CAN_USE_DOM } from 'shared/canUseDOM';
 
+import { CAN_USE_DOM } from './shared/can-use-dom';
 import { createWebsocketProvider } from './collaboration';
-import { useSettings } from './context/SettingsContext';
-import { useSharedHistoryContext } from './context/SharedHistoryContext';
-import ActionsPlugin from './plugins/ActionsPlugin';
-import AutocompletePlugin from './plugins/AutocompletePlugin';
-import AutoEmbedPlugin from './plugins/AutoEmbedPlugin';
-import AutoLinkPlugin from './plugins/AutoLinkPlugin';
-import CodeActionMenuPlugin from './plugins/CodeActionMenuPlugin';
-import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
-import CollapsiblePlugin from './plugins/CollapsiblePlugin';
-import CommentPlugin from './plugins/CommentPlugin';
-import ComponentPickerPlugin from './plugins/ComponentPickerPlugin';
-import ContextMenuPlugin from './plugins/ContextMenuPlugin';
-import DragDropPaste from './plugins/DragDropPastePlugin';
-import DraggableBlockPlugin from './plugins/DraggableBlockPlugin';
-import EmojiPickerPlugin from './plugins/EmojiPickerPlugin';
-import EmojisPlugin from './plugins/EmojisPlugin';
-import EquationsPlugin from './plugins/EquationsPlugin';
-import ExcalidrawPlugin from './plugins/ExcalidrawPlugin';
-import FigmaPlugin from './plugins/FigmaPlugin';
-import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
-import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
-import ImagesPlugin from './plugins/ImagesPlugin';
-import InlineImagePlugin from './plugins/InlineImagePlugin';
-import KeywordsPlugin from './plugins/KeywordsPlugin';
-import { LayoutPlugin } from './plugins/LayoutPlugin/LayoutPlugin';
-import LinkPlugin from './plugins/LinkPlugin';
-import MarkdownShortcutPlugin from './plugins/MarkdownShortcutPlugin';
-import { MaxLengthPlugin } from './plugins/MaxLengthPlugin';
-import MentionsPlugin from './plugins/MentionsPlugin';
-import PageBreakPlugin from './plugins/PageBreakPlugin';
-import PollPlugin from './plugins/PollPlugin';
-import ShortcutsPlugin from './plugins/ShortcutsPlugin';
-import SpecialTextPlugin from './plugins/SpecialTextPlugin';
-import SpeechToTextPlugin from './plugins/SpeechToTextPlugin';
-import TabFocusPlugin from './plugins/TabFocusPlugin';
-import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin';
-import TableCellResizer from './plugins/TableCellResizer';
-import TableHoverActionsPlugin from './plugins/TableHoverActionsPlugin';
-import TableOfContentsPlugin from './plugins/TableOfContentsPlugin';
-import ToolbarPlugin from './plugins/ToolbarPlugin';
-import TreeViewPlugin from './plugins/TreeViewPlugin';
-import TwitterPlugin from './plugins/TwitterPlugin';
-import YouTubePlugin from './plugins/YouTubePlugin';
+import { useSettings } from './context/settings-context.jsx';
+import { useSharedHistoryContext } from './context/shared-history-context.jsx';
+import ActionsPlugin from './plugins/actions-plugin.jsx';
+import AutocompletePlugin from './plugins/autocomplete-plugin.jsx';
+import AutoEmbedPlugin from './plugins/auto-embed-plugin.jsx';
+import AutoLinkPlugin from './plugins/lexical-auto-link-plugin.jsx';
+import CodeActionMenuPlugin from './plugins/CodeActionMenuPlugin/code-action-menu-plugin.jsx';
+import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/code-highlight-plugin.js';
+import CollapsiblePlugin from './plugins/CollapsiblePlugin/collapsible-plugin.js';
+import CommentPlugin from './plugins/CommentPlugin/comment-plugin.jsx';
+import ComponentPickerPlugin from './plugins/ComponentPickerPlugin/component-picker-plugin.jsx';
+import ContextMenuPlugin from './plugins/ContextMenuPlugin/context-menu-plugin.jsx';
+import DragDropPastePlugin from './plugins/DragDropPastePlugin/drag-drop-paste-plugin.jsx';
+import DraggableBlockPlugin from './plugins/DraggableBlockPlugin/draggable-block-plugin.jsx';
+import EmojiPickerPlugin from './plugins/EmojiPickerPlugin/emoji-picker-plugin.jsx';
+import EmojisPlugin from './plugins/EmojisPlugin/emojis-plugin.js';
+import EquationsPlugin from './plugins/EquationsPlugin/equations-plugin.jsx';
+import ExcalidrawPlugin from './plugins/ExcalidrawPlugin/excalidraw-plugin.jsx';
+import FigmaPlugin from './plugins/FigmaPlugin/figma-plugin.jsx';
+import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin/floating-link-editor-plugin.jsx';
+import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin/floating-text-format-toolbar-plugin.jsx';
+import ImagesPlugin from './plugins/ImagesPlugin/images-plugin.jsx';
+import InlineImagePlugin from './plugins/InlineImagePlugin/inline-image-plugin.jsx';
+import KeywordsPlugin from './plugins/KeywordsPlugin/keywords-plugin.js';
+import { LayoutPlugin } from './plugins/LayoutPlugin/layout-plugin.jsx';
+import LinkPlugin from './plugins/LinkPlugin/link-plugin.jsx';
+import MarkdownShortcutPlugin from './plugins/MarkdownShortcutPlugin/markdown-plugin.jsx';
+import { MaxLengthPlugin } from './plugins/MaxLengthPlugin/max-length-plugin.jsx';
+import MentionsPlugin from './plugins/MentionsPlugin/mentions-plugin.jsx';
+import PageBreakPlugin from './plugins/PageBreakPlugin/page-break-plugin.jsx';
+import PollPlugin from './plugins/PollPlugin/poll-plugin.jsx';
+import ShortcutsPlugin from './plugins/ShortcutsPlugin/shortcuts-plugin.jsx';
+import SpecialTextPlugin from './plugins/SpecialTextPlugin/special-text-plugin.js';
+import SpeechToTextPlugin from './plugins/SpeechToTextPlugin/speech-to-text-plugin.js';
+import TabFocusPlugin from './plugins/TabFocusPlugin/tab-focus-plugin.jsx';
+import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin/table-action-menu-plugin.jsx';
+import TableCellResizer from './plugins/TableCellResizer/table-cell-resizer-plugin.jsx';
+import TableHoverActionsPlugin from './plugins/TableHoverActionsPlugin/table-hover-actions-plugin.jsx';
+import TableOfContentsPlugin from './plugins/TableOfContentsPlugin/table-of-contents-plugin.jsx';
+import ToolbarPlugin from './plugins/ToolbarPlugin/toolbar-plugin.jsx';
+import TreeViewPlugin from './plugins/TreeViewPlugin/tree-view-plugin.jsx';
+import TwitterPlugin from './plugins/TwitterPlugin/twitter-plugin.js';
+import YouTubePlugin from './plugins/YouTubePlugin/youtube-plugin.js';
 import ContentEditable from './ui/lexical-content-editable';
 
 const skipCollaborationInit =
@@ -150,7 +150,7 @@ export default function Editor() {
 					!isRichText && 'plain-text'
 				}`}>
 				{isMaxLength && <MaxLengthPlugin maxLength={30} />}
-				<DragDropPaste />
+				<DragDropPastePlugin />
 				<AutoFocusPlugin />
 				{selectionAlwaysOnDisplay && <SelectionAlwaysOnDisplay />}
 				<ClearEditorPlugin />

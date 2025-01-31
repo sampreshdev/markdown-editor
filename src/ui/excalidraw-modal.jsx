@@ -1,13 +1,12 @@
-import './excalidraw-modal.css';
-
+import * as React from 'react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { isDOMNode } from 'lexical';
-import * as React from 'react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import Button from './Button';
-import Modal from './Modal';
+import Button from './button';
+import Modal from './Modal.jsx';
+import './excalidraw-modal.css';
 
 export const useCallbackRefState = () => {
 	const [refValue, setRefValue] =
