@@ -15,6 +15,8 @@ import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useEffect, useState } from 'react';
+import { $convertToMarkdownString } from '@lexical/markdown';
+import { $getRoot } from 'lexical';
 
 import { CAN_USE_DOM } from './shared/can-use-dom';
 import { useSettings } from './context/settings-context.jsx';
@@ -48,8 +50,9 @@ import TableHoverActionsPlugin from './plugins/TableHoverActionsPlugin/table-hov
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin/table-of-contents-plugin.jsx';
 import ToolbarPlugin from './plugins/ToolbarPlugin/toolbar-plugin.jsx';
 import ContentEditable from './ui/lexical-content-editable';
+import { PLAYGROUND_TRANSFORMERS } from './plugins/MarkdownTransformers/markdown-transformers.js';
 
-export default function Editor() {
+export default function Editor({ }) {
 	const {
 		settings: {
 			isCollab,
@@ -106,6 +109,19 @@ export default function Editor() {
 			window.removeEventListener('resize', updateViewPortWidth);
 		};
 	}, [isSmallWidthViewport]);
+
+	useEffect(() => {
+		const updateMarkdown = () => {
+		  editor.update(() => {
+				const markdown = $convertToMarkdownString(PLAYGROUND_TRANSFORMERS, $getRoot()
+				);
+				console.log(markdown);
+		  });
+		};
+		return editor.registerUpdateListener(({ editorState }) => {
+		  editorState.read(updateMarkdown);
+		});
+	  }, [editor]);
 
 	return (
 		<>
