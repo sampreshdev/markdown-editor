@@ -369,7 +369,7 @@ function useFloatingLinkEditorToolbar(
 }
 
 export default function FloatingLinkEditorPlugin({
-	anchorElem = document.body,
+	anchorElem,
 	isLinkEditMode,
 	setIsLinkEditMode
 }) {

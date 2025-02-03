@@ -10,7 +10,8 @@ export default defineConfig({
 		jsxFragment: 'Fragment'
 	  },
 	define: {
-		global: 'window'
+		global: 'window',
+		'process.env': {}
 	},
 	plugins: [react()],
 	css: {

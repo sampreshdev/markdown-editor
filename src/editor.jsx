@@ -4,14 +4,11 @@ import { CharacterLimitPlugin } from '@lexical/react/LexicalCharacterLimitPlugin
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
 import { ClickableLinkPlugin } from '@lexical/react/LexicalClickableLinkPlugin';
-import { CollaborationPlugin } from '@lexical/react/LexicalCollaborationPlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
@@ -20,9 +17,7 @@ import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useEffect, useState } from 'react';
 
 import { CAN_USE_DOM } from './shared/can-use-dom';
-import { createWebsocketProvider } from './collaboration';
 import { useSettings } from './context/settings-context.jsx';
-import { useSharedHistoryContext } from './context/shared-history-context.jsx';
 import ActionsPlugin from './plugins/actions-plugin.jsx';
 import AutocompletePlugin from './plugins/autocomplete-plugin.jsx';
 import AutoEmbedPlugin from './plugins/auto-embed-plugin.jsx';
@@ -30,15 +25,12 @@ import AutoLinkPlugin from './plugins/lexical-auto-link-plugin.jsx';
 import CodeActionMenuPlugin from './plugins/CodeActionMenuPlugin/code-action-menu-plugin.jsx';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin/code-highlight-plugin.js';
 import CollapsiblePlugin from './plugins/CollapsiblePlugin/collapsible-plugin.js';
-import CommentPlugin from './plugins/CommentPlugin/comment-plugin.jsx';
 import ComponentPickerPlugin from './plugins/ComponentPickerPlugin/component-picker-plugin.jsx';
 import ContextMenuPlugin from './plugins/ContextMenuPlugin/context-menu-plugin.jsx';
 import DragDropPastePlugin from './plugins/DragDropPastePlugin/drag-drop-paste-plugin.jsx';
 import DraggableBlockPlugin from './plugins/DraggableBlockPlugin/draggable-block-plugin.jsx';
 import EmojiPickerPlugin from './plugins/EmojiPickerPlugin/emoji-picker-plugin.jsx';
 import EmojisPlugin from './plugins/EmojisPlugin/emojis-plugin.js';
-import EquationsPlugin from './plugins/EquationsPlugin/equations-plugin.jsx';
-import ExcalidrawPlugin from './plugins/ExcalidrawPlugin/excalidraw-plugin.jsx';
 import FigmaPlugin from './plugins/FigmaPlugin/figma-plugin.jsx';
 import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin/floating-link-editor-plugin.jsx';
 import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin/floating-text-format-toolbar-plugin.jsx';
@@ -61,17 +53,11 @@ import TableCellResizer from './plugins/TableCellResizer/table-cell-resizer-plug
 import TableHoverActionsPlugin from './plugins/TableHoverActionsPlugin/table-hover-actions-plugin.jsx';
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin/table-of-contents-plugin.jsx';
 import ToolbarPlugin from './plugins/ToolbarPlugin/toolbar-plugin.jsx';
-import TreeViewPlugin from './plugins/TreeViewPlugin/tree-view-plugin.jsx';
 import TwitterPlugin from './plugins/TwitterPlugin/twitter-plugin.js';
 import YouTubePlugin from './plugins/YouTubePlugin/youtube-plugin.js';
 import ContentEditable from './ui/lexical-content-editable';
 
-const skipCollaborationInit =
-  // @ts-expect-error
-  window.parent != null && window.parent.frames.right === window;
-
 export default function Editor() {
-	const { historyState } = useSharedHistoryContext();
 	const {
 		settings: {
 			isCollab,
@@ -105,6 +91,7 @@ export default function Editor() {
 	const [editor] = useLexicalComposerContext();
 	const [activeEditor, setActiveEditor] = useState(editor);
 	const [isLinkEditMode, setIsLinkEditMode] = useState(false);
+	console.log(editor);
 
 	const onRef = _floatingAnchorElem => {
 		if (_floatingAnchorElem !== null) {
@@ -163,86 +150,62 @@ export default function Editor() {
 				<KeywordsPlugin />
 				<SpeechToTextPlugin />
 				<AutoLinkPlugin />
-				<CommentPlugin
-					providerFactory={isCollab ? createWebsocketProvider : undefined}
-				/>
-				{isRichText ? (
-					<>
-						{isCollab ? (
-							<CollaborationPlugin
-								id='main'
-								providerFactory={createWebsocketProvider}
-								shouldBootstrap={!skipCollaborationInit}
-							/>
-						) : (
-							<HistoryPlugin externalHistoryState={historyState} />
-						)}
-						<RichTextPlugin
-							contentEditable={
-								<div className='editor-scroller'>
-									<div className='editor' ref={onRef}>
-										<ContentEditable placeholder={placeholder} />
-									</div>
+				<>
+					<RichTextPlugin
+						contentEditable={
+							<div className='editor-scroller'>
+								<div className='editor' ref={onRef}>
+									<ContentEditable placeholder={placeholder} />
 								</div>
-							}
-							ErrorBoundary={LexicalErrorBoundary}
-						/>
-						<MarkdownShortcutPlugin />
-						<CodeHighlightPlugin />
-						<ListPlugin />
-						<CheckListPlugin />
-						<TablePlugin
-							hasCellMerge={tableCellMerge}
-							hasCellBackgroundColor={tableCellBackgroundColor}
-							hasHorizontalScroll={tableHorizontalScroll}
-						/>
-						<TableCellResizer />
-						<ImagesPlugin />
-						<InlineImagePlugin />
-						<LinkPlugin hasLinkAttributes={hasLinkAttributes} />
-						<PollPlugin />
-						<TwitterPlugin />
-						<YouTubePlugin />
-						<FigmaPlugin />
-						<ClickableLinkPlugin disabled={isEditable} />
-						<HorizontalRulePlugin />
-						<EquationsPlugin />
-						<ExcalidrawPlugin />
-						<TabFocusPlugin />
-						<TabIndentationPlugin maxIndent={7} />
-						<CollapsiblePlugin />
-						<PageBreakPlugin />
-						<LayoutPlugin />
-						{floatingAnchorElem && !isSmallWidthViewport && (
-							<>
-								<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-								<CodeActionMenuPlugin anchorElem={floatingAnchorElem} />
-								<FloatingLinkEditorPlugin
-									anchorElem={floatingAnchorElem}
-									isLinkEditMode={isLinkEditMode}
-									setIsLinkEditMode={setIsLinkEditMode}
-								/>
-								<TableCellActionMenuPlugin
-									anchorElem={floatingAnchorElem}
-									cellMerge={true}
-								/>
-								<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
-								<FloatingTextFormatToolbarPlugin
-									anchorElem={floatingAnchorElem}
-									setIsLinkEditMode={setIsLinkEditMode}
-								/>
-							</>
-						)}
-					</>
-				) : (
-					<>
-						<PlainTextPlugin
-							contentEditable={<ContentEditable placeholder={placeholder} />}
-							ErrorBoundary={LexicalErrorBoundary}
-						/>
-						<HistoryPlugin externalHistoryState={historyState} />
-					</>
-				)}
+							</div>
+						}
+						ErrorBoundary={LexicalErrorBoundary}
+					/>
+					<MarkdownShortcutPlugin />
+					<CodeHighlightPlugin />
+					<ListPlugin />
+					<CheckListPlugin />
+					<TablePlugin
+						hasCellMerge={tableCellMerge}
+						hasCellBackgroundColor={tableCellBackgroundColor}
+						hasHorizontalScroll={tableHorizontalScroll}
+					/>
+					<TableCellResizer />
+					<ImagesPlugin />
+					<InlineImagePlugin />
+					<LinkPlugin hasLinkAttributes={hasLinkAttributes} />
+					<PollPlugin />
+					<TwitterPlugin />
+					<YouTubePlugin />
+					<FigmaPlugin />
+					<ClickableLinkPlugin disabled={isEditable} />
+					<HorizontalRulePlugin />
+					<TabFocusPlugin />
+					<TabIndentationPlugin maxIndent={7} />
+					<CollapsiblePlugin />
+					<PageBreakPlugin />
+					<LayoutPlugin />
+					{floatingAnchorElem && !isSmallWidthViewport && (
+						<>
+							<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+							<CodeActionMenuPlugin anchorElem={floatingAnchorElem} />
+							{isLinkEditMode && <FloatingLinkEditorPlugin
+								anchorElem={floatingAnchorElem}
+								isLinkEditMode={isLinkEditMode}
+								setIsLinkEditMode={setIsLinkEditMode}
+							/>}
+							<TableCellActionMenuPlugin
+								anchorElem={floatingAnchorElem}
+								cellMerge={true}
+							/>
+							<TableHoverActionsPlugin anchorElem={floatingAnchorElem} />
+							<FloatingTextFormatToolbarPlugin
+								anchorElem={floatingAnchorElem}
+								setIsLinkEditMode={setIsLinkEditMode}
+							/>
+						</>
+					)}
+				</>
 				{(isCharLimit || isCharLimitUtf8) && (
 					<CharacterLimitPlugin
 						charset={isCharLimit ? 'UTF-16' : 'UTF-8'}
@@ -258,7 +221,6 @@ export default function Editor() {
 					shouldPreserveNewLinesInMarkdown={shouldPreserveNewLinesInMarkdown}
 				/>
 			</div>
-			{showTreeView && <TreeViewPlugin />}
 		</>
 	);
 }

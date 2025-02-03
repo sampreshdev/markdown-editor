@@ -14,8 +14,6 @@ import { CollapsibleTitleNode } from '../plugins/CollapsiblePlugin/collapsible-t
 
 import { AutocompleteNode } from './autocomplete-node';
 import { EmojiNode } from './emoji-node';
-import { EquationNode } from './equation-node';
-import { ExcalidrawNode } from './ExcalidrawNode/excalidraw-node';
 import { FigmaNode } from './figma-node';
 import { ImageNode } from './image-node';
 import { InlineImageNode } from './InlineImageNode/inline-image-node';
@@ -50,8 +48,6 @@ const PlaygroundNodes = [
 	InlineImageNode,
 	MentionNode,
 	EmojiNode,
-	ExcalidrawNode,
-	EquationNode,
 	AutocompleteNode,
 	KeywordNode,
 	HorizontalRuleNode,

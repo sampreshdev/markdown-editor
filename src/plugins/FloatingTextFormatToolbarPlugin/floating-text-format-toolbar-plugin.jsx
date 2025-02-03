@@ -19,7 +19,6 @@ import { createPortal } from 'react-dom';
 import { getDOMRangeRect } from '../../utils/get-dom-range-rect';
 import { getSelectedNode } from '../../utils/get-selected-node';
 import { setFloatingElemPosition } from '../../utils/set-floating-elem-position';
-import { INSERT_INLINE_COMMAND } from '../CommentPlugin/comment-plugin';
 import './index.css';
 
 function TextFormatFloatingToolbar({
@@ -49,10 +48,6 @@ function TextFormatFloatingToolbar({
 			editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
 		}
 	}, [editor, isLink, setIsLinkEditMode]);
-
-	const insertComment = () => {
-		editor.dispatchCommand(INSERT_INLINE_COMMAND, undefined);
-	};
 
 	function mouseMoveListener(e) {
 		if (
@@ -279,14 +274,6 @@ function TextFormatFloatingToolbar({
 					</button>
 				</>
 			)}
-			<button
-				type='button'
-				onClick={insertComment}
-				className={'popup-item spaced insert-comment'}
-				title='Insert comment'
-				aria-label='Insert comment'>
-				<i className='format add-comment' />
-			</button>
 		</div>
 	);
 }

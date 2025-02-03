@@ -56,8 +56,6 @@ import { getSelectedNode } from '../../utils/get-selected-node';
 import { sanitizeUrl } from '../../utils/url';
 import { EmbedConfigs } from '../auto-embed-plugin';
 import { INSERT_COLLAPSIBLE_COMMAND } from '../CollapsiblePlugin/collapsible-plugin';
-import { InsertEquationDialog } from '../EquationsPlugin/equations-plugin';
-import { INSERT_EXCALIDRAW_COMMAND } from '../ExcalidrawPlugin/excalidraw-plugin';
 import {
 	INSERT_IMAGE_COMMAND,
 	InsertImageDialog
@@ -1023,17 +1021,6 @@ export default function ToolbarPlugin({
 								</DropDownItem>
 								<DropDownItem
 									onClick={() => {
-										activeEditor.dispatchCommand(
-											INSERT_EXCALIDRAW_COMMAND,
-											undefined
-										);
-									}}
-									className='item'>
-									<i className='icon diagram-2' />
-									<span className='text'>Excalidraw</span>
-								</DropDownItem>
-								<DropDownItem
-									onClick={() => {
 										showModal('Insert Table', onClose => (
 											<InsertTableDialog
 												activeEditor={activeEditor}
@@ -1072,19 +1059,6 @@ export default function ToolbarPlugin({
 									<span className='text'>Columns Layout</span>
 								</DropDownItem>
 
-								<DropDownItem
-									onClick={() => {
-										showModal('Insert Equation', onClose => (
-											<InsertEquationDialog
-												activeEditor={activeEditor}
-												onClose={onClose}
-											/>
-										));
-									}}
-									className='item'>
-									<i className='icon equation' />
-									<span className='text'>Equation</span>
-								</DropDownItem>
 								<DropDownItem
 									onClick={() => {
 										editor.update(() => {

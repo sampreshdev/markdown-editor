@@ -150,7 +150,7 @@ export default function ColorPicker({
 }
 
 function MoveWrapper({ className, style, onChange, children }) {
-	const divRef = useRef < HTMLDivElement > (null);
+	const divRef = useRef(null);
 	const draggedRef = useRef(false);
 
 	const move = e => {

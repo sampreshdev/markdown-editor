@@ -180,11 +180,11 @@ export default function CollapsiblePlugin() {
 					}
 
 					const container = topLevelElement.getPreviousSibling();
-					if (!$isCollapsibleContainerNode(container) || container.getOpen()) {
+					if (!$isCollapsibleContainerNode(container) || container.getLatest()) {
 						return false;
 					}
 
-					container.setOpen(true);
+					container.getWritable().__open = true;
 					return true;
 				},
 				COMMAND_PRIORITY_LOW
