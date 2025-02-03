@@ -4,7 +4,6 @@ import {
 	$isTextNode,
 	TextNode
 } from 'lexical';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import { FlashMessageContext } from './context/flash-message-context';
 import { SettingsContext, useSettings } from './context/settings-context';

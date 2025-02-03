@@ -6,7 +6,6 @@ import {
 } from '@lexical/code';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isListNode, ListNode } from '@lexical/list';
-import { INSERT_EMBED_COMMAND } from '@lexical/react/LexicalAutoEmbedPlugin';
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 import { $isHeadingNode } from '@lexical/rich-text';
 import {
@@ -23,7 +22,6 @@ import {
 } from '@lexical/utils';
 import {
 	$getNodeByKey,
-	$getRoot,
 	$getSelection,
 	$isElementNode,
 	$isRangeSelection,
@@ -48,22 +46,14 @@ import {
 	useToolbarState
 } from '../../context/toolbar-context';
 import useModal from '../../hooks/use-modal';
-import catTypingGif from '../../images/cat-typing.gif';
-import { $createStickyNode } from '../../nodes/sticky-node';
 import DropDown, { DropDownItem } from '../../ui/drop-down';
 import DropdownColorPicker from '../../ui/dropdown-color-picker';
 import { getSelectedNode } from '../../utils/get-selected-node';
 import { sanitizeUrl } from '../../utils/url';
-import { EmbedConfigs } from '../auto-embed-plugin';
-import { INSERT_COLLAPSIBLE_COMMAND } from '../CollapsiblePlugin/collapsible-plugin';
 import {
-	INSERT_IMAGE_COMMAND,
 	InsertImageDialog
 } from '../ImagesPlugin/images-plugin';
-import { InsertInlineImageDialog } from '../InlineImagePlugin/inline-image-plugin';
-import InsertLayoutDialog from '../LayoutPlugin/insert-layout-dialog';
 import { INSERT_PAGE_BREAK } from '../PageBreakPlugin/page-break-plugin';
-import { InsertPollDialog } from '../PollPlugin/poll-plugin';
 import { SHORTCUTS } from '../ShortcutsPlugin/shortcuts';
 import { InsertTableDialog } from '../table-plugin';
 
@@ -678,9 +668,6 @@ export default function ToolbarPlugin({
 		},
 		[activeEditor, selectedElementKey]
 	);
-	const insertGifOnClick = payload => {
-		activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-	};
 
 	const canViewerSeeInsertDropdown = !toolbarState.isImageCaption;
 	const canViewerSeeInsertCodeButton = !toolbarState.isImageCaption;
@@ -997,30 +984,6 @@ export default function ToolbarPlugin({
 								</DropDownItem>
 								<DropDownItem
 									onClick={() => {
-										showModal('Insert Inline Image', onClose => (
-											<InsertInlineImageDialog
-												activeEditor={activeEditor}
-												onClose={onClose}
-											/>
-										));
-									}}
-									className='item'>
-									<i className='icon image' />
-									<span className='text'>Inline Image</span>
-								</DropDownItem>
-								<DropDownItem
-									onClick={() =>
-										insertGifOnClick({
-											altText: 'Cat typing on a laptop',
-											src: catTypingGif
-										})
-									}
-									className='item'>
-									<i className='icon gif' />
-									<span className='text'>GIF</span>
-								</DropDownItem>
-								<DropDownItem
-									onClick={() => {
 										showModal('Insert Table', onClose => (
 											<InsertTableDialog
 												activeEditor={activeEditor}
@@ -1032,70 +995,6 @@ export default function ToolbarPlugin({
 									<i className='icon table' />
 									<span className='text'>Table</span>
 								</DropDownItem>
-								<DropDownItem
-									onClick={() => {
-										showModal('Insert Poll', onClose => (
-											<InsertPollDialog
-												activeEditor={activeEditor}
-												onClose={onClose}
-											/>
-										));
-									}}
-									className='item'>
-									<i className='icon poll' />
-									<span className='text'>Poll</span>
-								</DropDownItem>
-								<DropDownItem
-									onClick={() => {
-										showModal('Insert Columns Layout', onClose => (
-											<InsertLayoutDialog
-												activeEditor={activeEditor}
-												onClose={onClose}
-											/>
-										));
-									}}
-									className='item'>
-									<i className='icon columns' />
-									<span className='text'>Columns Layout</span>
-								</DropDownItem>
-
-								<DropDownItem
-									onClick={() => {
-										editor.update(() => {
-											const root = $getRoot();
-											const stickyNode = $createStickyNode(0, 0);
-											root.append(stickyNode);
-										});
-									}}
-									className='item'>
-									<i className='icon sticky' />
-									<span className='text'>Sticky Note</span>
-								</DropDownItem>
-								<DropDownItem
-									onClick={() => {
-										editor.dispatchCommand(
-											INSERT_COLLAPSIBLE_COMMAND,
-											undefined
-										);
-									}}
-									className='item'>
-									<i className='icon caret-right' />
-									<span className='text'>Collapsible container</span>
-								</DropDownItem>
-								{EmbedConfigs.map(embedConfig => (
-									<DropDownItem
-										key={embedConfig.type}
-										onClick={() => {
-											activeEditor.dispatchCommand(
-												INSERT_EMBED_COMMAND,
-												embedConfig.type
-											);
-										}}
-										className='item'>
-										{embedConfig.icon}
-										<span className='text'>{embedConfig.contentName}</span>
-									</DropDownItem>
-								))}
 							</DropDown>
 						</>
 					)}

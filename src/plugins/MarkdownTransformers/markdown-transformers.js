@@ -31,7 +31,6 @@ import {
 } from 'lexical';
 
 import { $createImageNode, $isImageNode, ImageNode } from '../../nodes/image-node';
-import { $createTweetNode, $isTweetNode, TweetNode } from '../../nodes/tweet-node';
 import emojiList from '../../utils/emoji-list';
 
 export const HR = {
@@ -92,24 +91,6 @@ export const EMOJI = {
 	},
 	trigger: ':',
 	type: 'text-match'
-};
-
-export const TWEET = {
-	dependencies: [TweetNode],
-	'export': node => {
-		if (!$isTweetNode(node)) {
-			return null;
-		}
-
-		return `<tweet id="${ node.getId() }" />`;
-	},
-	regExp: /<tweet id="([^"]+?)"\s?\/>\s?$/,
-	replace: (textNode, _1, match) => {
-		const [, id] = match;
-		const tweetNode = $createTweetNode(id);
-		textNode.replace(tweetNode);
-	},
-	type: 'element'
 };
 
 // Very primitive table setup
@@ -274,7 +255,6 @@ export const PLAYGROUND_TRANSFORMERS = [
 	HR,
 	IMAGE,
 	EMOJI,
-	TWEET,
 	CHECK_LIST,
 	...ELEMENT_TRANSFORMERS,
 	...MULTILINE_ELEMENT_TRANSFORMERS,
