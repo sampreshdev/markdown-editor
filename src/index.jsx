@@ -1,8 +1,5 @@
-// import 'antd/dist/antd.less';
-
 import React from 'react';
 import * as Sentry from '@sentry/react';
-// import Modal from 'react-modal';
 import { render } from 'react-dom';
 
 import App from './app';

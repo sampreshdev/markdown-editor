@@ -1,58 +1,56 @@
-import React, { useRef, useState } from 'react';
-import { createReactEditorJS } from 'react-editor-js';
+import React, { useCallback } from 'react';
+import { addEdge, Background, Controls, MiniMap, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
 
-import { EDITOR_JS_TOOLS as editoJsTools } from './tools/tools.js';
-import './index.css?inline';
-import getMarkdownData from './get-markdown-data.js';
-
-import './app.css?global';
+import style from './app.module.scss';
 
 export default function App({ }) {
-	const editorCore = useRef(null);
-	const [data, setData] = useState('');
-	const [rawMode, setRawMode] = useState(false);
-	const ReactEditorJS = createReactEditorJS();
-
-	const handleInitialize = React.useCallback(instance => {
-		editorCore.current = instance;
-	}, []);
-
-	const handleReady = () => {
-		const editor = editorCore.current._editorJS;
-	};
-
-	const handleSave = React.useCallback(async () => {
-		const savedData = await editorCore.current.save();
-		console.log(savedData);
-		let markdownString = '';
-		if (savedData?.blocks?.length > 0) {
-			savedData.blocks.map(el => {
-				markdownString += el.data.text;
-			})
+	const initialNodes = [
+		{
+			id: 'add_node',
+			sourcePosition: 'right',
+			position: {
+				x: 0, y: 0
+			},
+			data: { label: <div className={style['add-node-text']}>
+                Add Node
+			</div> },
+			type: 'add-node',
+			className: 'add-node',
+			focusable: true
 		}
-		setData(markdownString);
-	}, []);
-	console.log( data, 'data');
+	];
+
+	const nodeColor = node => {
+		switch (node.type) {
+		  case 'add-node':
+				return '#6ede87';
+		  case 'output':
+				return '#6865A5';
+		  default:
+				return '#ff0072';
+		}
+	  };
+
+	const initialEdges = [{ id: 'add_node-2', source: 'add_node', target: '2', label: 'to the', type: 'step' }];
+	const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
+	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+	const onConnect = useCallback(params => setEdges(eds => addEdge(params, eds)), [setEdges]);
 	return (
 		<>
-		<label className='switch'>
-			<input type="checkbox" onChange={() => setRawMode(!rawMode)} />
-			<span className='slider round'></span>
-		</label>
-		<div key={JSON.stringify(rawMode)}>
-			<ReactEditorJS
-				onInitialize={handleInitialize}
-				tools={editoJsTools({ rawMode })}
-				onChange={handleSave}
-				onReady={handleReady}
-				autofocus
-				defaultValue={{ blocks: getMarkdownData(data) }}
-				holder={'editor-div'}
-				placeholder={'Enter Input Here'}
-			>
-				<div id={'editor-div'} />
-			</ReactEditorJS>
-		</div>
+		 <div className={style['chat-layout']}>
+		 <ReactFlow
+					nodes={nodes}
+					edges={edges}
+					onNodesChange={onNodesChange}
+					onEdgesChange={onEdgesChange}
+					onConnect={onConnect}
+				>
+					<MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
+					<Controls />
+					<Background />
+				</ReactFlow>
+			</div>
 		</>
 	);
 }
