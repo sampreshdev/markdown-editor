@@ -1,0 +1,53 @@
+.drawer-for-nodes {
+    :global {
+        .ant-drawer-header {
+            display: none;
+        }
+        .ant-drawer-mask {
+            display: none;
+        }
+        .ant-drawer-body {
+            padding: 0px;
+        }
+    }
+    .type-node-drawer {
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            .text {
+                font-size: 14px;
+            }
+            .close-button {
+                cursor: pointer;
+            }
+        }
+        .element-div {
+            .add-questions {
+                padding: 10px 20px;
+                border-bottom: 1px solid #aaa;
+                margin-bottom: 10px;
+            }
+            .node-el {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 20px;
+                cursor: pointer;
+                .icon {
+                    img {
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+                .text {
+                    font-size: 14px;
+                }
+                &:hover{
+                    background-color: #f2f2f2;
+                }
+            }
+        }
+    }
+}

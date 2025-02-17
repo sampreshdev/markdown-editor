@@ -1,0 +1,45 @@
+.add-node-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #272727;
+    font-family: 'Segoe Pro Semibold';
+}
+.add-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 36px 8px 8px 36px;
+    position: relative;
+    height: calc(100px + 42px);
+    width: 100px;
+    background: #fff;
+    border: 2px solid #aaa;
+}
+.add-handle {
+    min-width: 10px !important;
+    min-height: 10px !important;
+}
+.handle-add {
+    width: 25px;
+    height: 1px;
+    position: absolute;
+    top: 48.5%;
+    left: 10px;
+    border-top: 1px solid #aaaaaa;
+}
+.add-icon {
+    padding: 0px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #aaaaaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    color: #aaaaaa;
+    position: absolute;
+    right: -20px;
+    top: -11px;
+}
